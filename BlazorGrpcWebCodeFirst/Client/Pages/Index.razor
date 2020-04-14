@@ -1,7 +1,33 @@
 ﻿@page "/"
+@using BlazorGrpcWebCodeFirst.Shared;
+@using ProtoBuf.Grpc.Client;
 
-<h1>Hello, world!</h1>
+<EditForm Model="@request" OnValidSubmit="Submit">
+	<InputText @bind-Value="request.Text" />
+	<InputNumber @bind-Value="request.Value" />
+	<input type="submit" value="Submit" />
+</EditForm>
 
-Welcome to your new app.
+@if (result != null)
+{
+	@result.NewText
+	<br />
+	@result.NewValue
+	<br />
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code
+{
+	MyServiceRequest request = new MyServiceRequest() { Text = "Hello world", Value = 42 };
+	MyServiceResult result;
+
+	async Task Submit()
+	{
+		var handler = new Grpc.Net.Client.Web.GrpcWebHandler(Grpc.Net.Client.Web.GrpcWebMode.GrpcWeb, new HttpClientHandler());
+		using (var channel = Grpc.Net.Client.GrpcChannel.ForAddress("https://localhost:44383/", new Grpc.Net.Client.GrpcChannelOptions() { HttpClient = new HttpClient(handler) }))
+		{
+			var testFacade = channel.CreateGrpcService<IMyService>();
+			this.result = await testFacade.DoSomething(request);
+		}
+	}
+}

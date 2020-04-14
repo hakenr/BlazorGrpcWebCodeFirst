@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using ProtoBuf.Grpc.Server;
+using BlazorGrpcWebCodeFirst.Server.Services;
+using BlazorGrpcWebCodeFirst.Shared;
 
 namespace BlazorGrpcWebCodeFirst.Server
 {
@@ -22,6 +25,14 @@ namespace BlazorGrpcWebCodeFirst.Server
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCodeFirstGrpc(config =>
+			{
+				config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
+			});
+			services.AddGrpcWeb(options =>
+			{
+				options.GrpcWebEnabled = true;
+			});
 
 			services.AddControllersWithViews();
 		}
@@ -47,8 +58,12 @@ namespace BlazorGrpcWebCodeFirst.Server
 
 			app.UseRouting();
 
+			app.UseGrpcWeb();
+
 			app.UseEndpoints(endpoints =>
 			{
+				endpoints.MapGrpcService<MyService>();
+
 				endpoints.MapControllers();
 				endpoints.MapFallbackToFile("index.html");
 			});
