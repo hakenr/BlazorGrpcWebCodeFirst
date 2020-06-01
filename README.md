@@ -9,13 +9,12 @@ Register `CodeFirstGrpc()` and `GrpcWeb()` services in `Startup.cs` ConfigureSer
 
 ```csharp
 services.AddCodeFirstGrpc(config => { config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal; });
-services.AddGrpcWeb(options => { options.GrpcWebEnabled = true; }
 ```
 
 Add `GrpcWeb` middleware in between `UseRouting()` and `UseEndpoints()`:
 
 ```csharp
-app.UseGrpcWeb();
+app.UseGrpcWeb(new GrpcWebOptions() { DefaultEnabled = true });
 ```
 
 ## 2. Blazor.Shared - Define the service contract (code-first)
