@@ -29,10 +29,6 @@ namespace BlazorGrpcWebCodeFirst.Server
 			{
 				config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
 			});
-			services.AddGrpcWeb(options =>
-			{
-				options.GrpcWebEnabled = true;
-			});
 
 			services.AddControllersWithViews();
 		}
@@ -58,7 +54,7 @@ namespace BlazorGrpcWebCodeFirst.Server
 
 			app.UseRouting();
 
-			app.UseGrpcWeb();
+			app.UseGrpcWeb(new GrpcWebOptions() { DefaultEnabled = true });
 
 			app.UseEndpoints(endpoints =>
 			{
