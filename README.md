@@ -1,6 +1,6 @@
 # Blazor WebAssembly with gRPC-Web code-first approach
 Do you like WCF-like approach and need to cover communication in between ASP.NET Core service and Blazor WebAssembly client? Use code-first with gRPC-Web! You can try the it right now by following a few simple steps (<a href="https://github.com/hakenr/BlazorGrpcWebCodeFirst/commit/e2bbbbb0aa8b9c9709145e271ee25cb41a4effae">commit</a>):
-## 1. Blazor.Server - Prepare the ASP.NET Core host<
+## 1. Blazor.Server - Prepare the ASP.NET Core host
 Add NuGet packages:
 * [Grpc.AspNetCore.Web](https://www.nuget.org/packages/Grpc.AspNetCore.Web) (prerelease)
 * [protobuf-net.Grpc.AspNetCore](https://www.nuget.org/packages/protobuf-net.Grpc.AspNetCore/)
