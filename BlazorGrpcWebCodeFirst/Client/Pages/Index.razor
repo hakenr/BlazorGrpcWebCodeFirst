@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using BlazorGrpcWebCodeFirst.Shared;
 @using ProtoBuf.Grpc.Client;
+@inject Grpc.Net.Client.GrpcChannel GrpcChannel
 
 <EditForm Model="@request" OnValidSubmit="Submit">
 	<InputText @bind-Value="request.Text" />
@@ -23,11 +24,7 @@
 
 	async Task Submit()
 	{
-		var handler = new Grpc.Net.Client.Web.GrpcWebHandler(Grpc.Net.Client.Web.GrpcWebMode.GrpcWeb, new HttpClientHandler());
-		using (var channel = Grpc.Net.Client.GrpcChannel.ForAddress("https://localhost:44383/", new Grpc.Net.Client.GrpcChannelOptions() { HttpClient = new HttpClient(handler) }))
-		{
-			var testFacade = channel.CreateGrpcService<IMyService>();
-			this.result = await testFacade.DoSomething(request);
-		}
+		var testFacade = GrpcChannel.CreateGrpcService<IMyService>();
+		this.result = await testFacade.DoSomething(request);
 	}
 }
