@@ -135,7 +135,7 @@ builder.Services.AddSingleton(services =>
 });
 ```
 
-Register the individual services:
+Register the individual services (you might want to extract the "logic" to an extension method for better readability).
 ```csharp
 builder.Services.AddTransient<IMyService>(services =>
 {
@@ -144,7 +144,7 @@ builder.Services.AddTransient<IMyService>(services =>
 });
 ```
 
-Consume the service from .razor file:
+And now you can consume the services whereever needed (e.g. from .razor file):
 ```csharp
 @inject	IMyService MyService
 @code
