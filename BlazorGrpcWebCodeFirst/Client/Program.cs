@@ -42,7 +42,7 @@ namespace BlazorGrpcWebCodeFirst.Client
 				//
 				// GrpcWebText is used because server streaming requires it. If server streaming is not used in your app
 				// then GrpcWeb is recommended because it produces smaller messages.
-				var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWebText, new HttpClientHandler());
+				var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler());
 
 				return GrpcChannel.ForAddress(
 					backendUrl,

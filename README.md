@@ -84,6 +84,7 @@ Add NuGet packages:
 * [Grpc.Net.Client.Web](https://www.nuget.org/packages/Grpc.Net.Client.Web) (prerelease)
 * [protobuf-net.Grpc](https://www.nuget.org/packages/protobuf-net.Grpc)
 
+### 4A. Direct consumption of the service
 Consume the service in your razor file:
 
 ```csharp
@@ -94,9 +95,69 @@ using (var channel = Grpc.Net.Client.GrpcChannel.ForAddress("https://localhost:4
 	this.result = await testFacade.DoSomething(request);
 }
 ```
-(You can move the plumbing to `ConfigureServices()` as a factory and use pure dependency injection in your razor files.)
 
-# References
+### 4B. Consumption via dependency injection
+Register a GrpcChannel in your `Program.cs` (or `Startup.cs:ConfigureServices()`)
+```csharp
+builder.Services.AddSingleton(services =>
+{
+	// Get the service address from appsettings.json
+	var config = services.GetRequiredService<IConfiguration>();
+	var backendUrl = config["BackendUrl"];
+
+	// If no address is set then fallback to the current webpage URL
+	if (string.IsNullOrEmpty(backendUrl))
+	{
+		var navigationManager = services.GetRequiredService<NavigationManager>();
+		backendUrl = navigationManager.BaseUri;
+	}
+
+	// Create a channel with a GrpcWebHandler that is addressed to the backend server.
+	//
+	// GrpcWebText is used because server streaming requires it. If server streaming is not used in your app
+	// then GrpcWeb is recommended because it produces smaller messages.
+	var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler());
+
+	return GrpcChannel.ForAddress(
+		backendUrl,
+		new GrpcChannelOptions
+		{
+			HttpHandler = httpHandler,
+			//CompressionProviders = ...,
+			//Credentials = ...,
+			//DisposeHttpClient = ...,
+			//HttpClient = ...,
+			//LoggerFactory = ...,
+			//MaxReceiveMessageSize = ...,
+			//MaxSendMessageSize = ...,
+			//ThrowOperationCanceledOnCancellation = ...,
+		});
+});
+```
+
+Register the individual services:
+```csharp
+builder.Services.AddTransient<IMyService>(services =>
+{
+	var grpcChannel = services.GetRequiredService<GrpcChannel>();
+	return grpcChannel.CreateGrpcService<IMyService>();
+});
+```
+
+Consume the service from .razor file:
+```csharp
+@inject	IMyService MyService
+@code
+{
+	async Task Submit()
+	{
+		this.result = await MyService.DoSomething(request);
+	}
+}
+```
+
+# References, Credits
 * [Steve Sanderson: Using gRPC-Web with Blazor WebAssembly](https://blog.stevensanderson.com/2020/01/15/2020-01-15-grpc-web-in-blazor-webassembly/)
 * [Use gRPC in browser apps | Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser)
 * [protobuf-net.Grpc - Getting Started](https://protobuf-net.github.io/protobuf-net.Grpc/gettingstarted)
+* https://github.com/grpc/grpc-dotnet/blob/master/examples/Blazor/Client/Program.cs
