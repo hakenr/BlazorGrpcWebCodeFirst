@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Components;
 using Grpc.Net.Client.Web;
 using Grpc.Net.Client;
+using BlazorGrpcWebCodeFirst.Shared;
+using ProtoBuf.Grpc.Client;
 
 namespace BlazorGrpcWebCodeFirst.Client
 {
@@ -56,6 +58,12 @@ namespace BlazorGrpcWebCodeFirst.Client
 						//MaxSendMessageSize = ...,
 						//ThrowOperationCanceledOnCancellation = ...,
 					});
+			});
+
+			builder.Services.AddTransient<IMyService>(services =>
+			{
+				var grpcChannel = services.GetRequiredService<GrpcChannel>();
+				return grpcChannel.CreateGrpcService<IMyService>();
 			});
 
 			await builder.Build().RunAsync();

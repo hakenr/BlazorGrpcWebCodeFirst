@@ -1,7 +1,6 @@
 ﻿@page "/"
 @using BlazorGrpcWebCodeFirst.Shared;
-@using ProtoBuf.Grpc.Client;
-@inject Grpc.Net.Client.GrpcChannel GrpcChannel
+@inject IMyService MyService
 
 <EditForm Model="@request" OnValidSubmit="Submit">
 	<InputText @bind-Value="request.Text" />
@@ -24,7 +23,6 @@
 
 	async Task Submit()
 	{
-		var testFacade = GrpcChannel.CreateGrpcService<IMyService>();
-		this.result = await testFacade.DoSomething(request);
+		this.result = await MyService.DoSomething(request);
 	}
 }
