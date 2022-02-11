@@ -5,12 +5,11 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlazorGrpcWebCodeFirst.Shared
+namespace BlazorGrpcWebCodeFirst.Shared;
+[ServiceContract]
+public interface IMyService
 {
-    [ServiceContract]
-	public interface IMyService
-    {
-		Task<MyServiceResult> DoSomething(MyServiceRequest request);
-        
-    }
+  Task<MyServiceResult> DoSomething(MyServiceRequest request);
+    
 }
+

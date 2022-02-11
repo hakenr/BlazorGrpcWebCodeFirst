@@ -1,27 +1,27 @@
 {
-    "useWebAssemblyDebugging": true,
     "iisSettings": {
       "windowsAuthentication": false,
       "anonymousAuthentication": true,
       "iisExpress": {
-        "applicationUrl": "http://localhost:54138",
-        "sslPort": 44383
+        "applicationUrl": "http://localhost:8774",
+        "sslPort": 44301
       }
     },
     "profiles": {
-      "IIS Express": {
-        "commandName": "IISExpress",
+      "BlazorGrpcWebCodeFirst.Server": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
         "launchBrowser": true,
         "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+        "applicationUrl": "https://localhost:7058;http://localhost:5079",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
       },
-      "BlazorGrpcWebCodeFirst.Server": {
-        "commandName": "Project",
+      "IIS Express": {
+        "commandName": "IISExpress",
         "launchBrowser": true,
         "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-        "applicationUrl": "https://localhost:5001;http://localhost:5000",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
