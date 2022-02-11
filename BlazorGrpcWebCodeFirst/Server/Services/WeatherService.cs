@@ -7,7 +7,7 @@ using System.Linq;
 namespace BlazorGrpcWebCodeFirst.Server.Services;
 
 #region snippet
-public class WheatherService : IWeatherForecasts
+public class WeatherService : IWeatherForecasts
 {
 
     private static readonly string[] Summaries = new[]

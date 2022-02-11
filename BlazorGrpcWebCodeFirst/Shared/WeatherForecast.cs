@@ -1,7 +1,5 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Threading.Tasks;
 
 namespace BlazorGrpcWebCodeFirst.Shared;
 
