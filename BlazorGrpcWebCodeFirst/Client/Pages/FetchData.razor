@@ -2,6 +2,8 @@
 @using System.Net.Http.Json
 @using BlazorGrpcWebCodeFirst.Shared
 @inject HttpClient Http
+@using ProtoBuf.Grpc.Client
+@inject IWeatherForecasts WeatherForecastsService
 
 <h1>Weather forecast</h1>
 
@@ -36,12 +38,20 @@ else
     </table>
 }
 
+<button @onclick="LoadRemoteData">Refresh</button>
+
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        await LoadRemoteData();
+    }
+
+    async Task LoadRemoteData()
+    {
+        var reply = await WeatherForecastsService.Get();
+        forecasts = reply.Data;
     }
 
 }

@@ -1,17 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Threading.Tasks;
 
-namespace BlazorGrpcWebCodeFirst.Shared
+namespace BlazorGrpcWebCodeFirst.Shared;
+
+[DataContract]
+public class WeatherForecast
 {
-	public class WeatherForecast
-	{
-		public DateTime Date { get; set; }
+	[DataMember(Order = 1)]
+	public DateTime Date { get; set; }
 
-		public int TemperatureC { get; set; }
+	[DataMember(Order = 2)]
+	public int TemperatureC { get; set; }
 
-		public string Summary { get; set; }
+	[DataMember(Order = 3)]
+	public string? Summary { get; set; }
 
-		public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-	}
+	public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
+
+[DataContract]
+public class WeatherForecasts
+{
+	[DataMember(Order = 10)]
+	public WeatherForecast[] Data {get; set;} = Array.Empty<WeatherForecast>();
+}
+
+
+[ServiceContract]
+public interface IWeatherForecasts
+{
+	[OperationContract]
+	Task<WeatherForecasts> Get();
+
 }
