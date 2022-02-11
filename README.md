@@ -156,8 +156,16 @@ And now you can consume the services whereever needed (e.g. from .razor file):
 }
 ```
 
+# Advanced scenarios
+For more advanced usage with error-handling, authentication + authorization and more, see our Havit.Blazor project template:
+* https://github.com/havit/NewProjectTemplate-Blazor
+
 # References, Credits
 * [Steve Sanderson: Using gRPC-Web with Blazor WebAssembly](https://blog.stevensanderson.com/2020/01/15/2020-01-15-grpc-web-in-blazor-webassembly/)
 * [Use gRPC in browser apps | Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser)
 * [protobuf-net.Grpc - Getting Started](https://protobuf-net.github.io/protobuf-net.Grpc/gettingstarted)
 * https://github.com/grpc/grpc-dotnet/blob/master/examples/Blazor/Client/Program.cs
+* credits to @dani-herrera-udg for upgrading to .NET 6
+
+# Known Issues
+* https://github.com/dotnet/runtime/issues/62054 - may be hitting GC bug in .NET6
